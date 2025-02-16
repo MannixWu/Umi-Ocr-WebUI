@@ -18,14 +18,24 @@ function uploadImage() {
             }
         };
 
+        console.log('请求数据:', data);
+
         fetch(url, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {"Content-Type": "application/json"},
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('响应状态:', response.status);
+            return response.json();
+        })
         .then(data => {
-            document.getElementById('result').innerText = `识别结果: ${data.text}`;
+            console.log('响应数据:', data);
+            if (data.data) {
+                document.getElementById('result').innerText = `识别结果: ${data.data}`;
+            } else {
+                document.getElementById('result').innerText = '未能识别出文本';
+            }
         })
         .catch(error => {
             console.error('Error:', error);
