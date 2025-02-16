@@ -3,13 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR 图片上传</title>
+    <title>在线OCR文字识别</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .left-side, .right-side {
+            width: 48%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        h1 {
+            color: #444;
+        }
+
+        #dropArea {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        #dropArea.highlight {
+            border-color: #666;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #uploadedImage {
+            max-width: 100%;
+            max-height: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            background-color: #f4f4f9;
+            transition: background-color 0.3s ease;
+            margin-right: 5px;
+        }
+
+        .tab.active {
+            background-color: #fff;
+            font-weight: bold;
+            border-bottom: 1px solid #fff;
+        }
+
+        .tab-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            box-sizing: border-box;
+            background-color: #fff;
+            padding: 20px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    <h1>上传图片进行OCR识别</h1>
-    <input type="file" id="imageInput" accept="image/*">
-    <button onclick="uploadImage()">上传并识别</button>
-    <div id="result"></div>
+    <div class="left-side">
+        <h1>在线OCR识别</h1>
+        <button onclick="captureScreenshot()">截图并识别</button>
+        <div id="dropArea">
+            拖拽图片到此区域或粘贴图片
+            <img id="uploadedImage" alt="Uploaded Image">
+        </div>
+        <canvas id="screenshotCanvas" style="display: none;"></canvas>
+    </div>
+    <div class="right-side">
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('result')">识别结果</div>
+            <div class="tab" onclick="showTab('history')">历史结果</div>
+        </div>
+        <div id="result" class="tab-content active"></div>
+        <div id="history" class="tab-content"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
